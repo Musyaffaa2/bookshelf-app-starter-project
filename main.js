@@ -20,20 +20,24 @@ document.addEventListener("DOMContentLoaded", function () {
       bookElement.classList.add("book-item");
       bookElement.setAttribute("data-bookid", book.id);
       bookElement.innerHTML = `
-          <h3>${book.title}</h3>
-          <p>Penulis: ${book.author}</p>
-          <p>Tahun: ${book.year}</p>
-          <div>
-            <button class="toggle-complete">${
-              book.isComplete ? "Belum Selesai" : "Selesai"
-            } dibaca</button>
-            <button class="delete">Hapus Buku</button>
-          </div>
-        `;
+        <h3>${book.title}</h3>
+        <p>Penulis: ${book.author}</p>
+        <p>Tahun: ${book.year}</p>
+        <div>
+          <button class="toggle-complete">${
+            book.isComplete ? "Belum Selesai" : "Selesai"
+          } dibaca</button>
+          <button class="edit">Edit</button>
+          <button class="delete">Hapus Buku</button>
+        </div>
+      `;
 
       bookElement
         .querySelector(".toggle-complete")
         .addEventListener("click", () => toggleBookStatus(book.id));
+      bookElement
+        .querySelector(".edit")
+        .addEventListener("click", () => editBook(book.id));
       bookElement
         .querySelector(".delete")
         .addEventListener("click", () => deleteBook(book.id));
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const isComplete = document.getElementById("bookFormIsComplete").checked;
 
     const newBook = {
-      id: Date().getTime(),
+      id: Date.now(),
       title,
       author,
       year,
@@ -64,6 +68,20 @@ document.addEventListener("DOMContentLoaded", function () {
     saveBooks();
     renderBooks();
     bookForm.reset();
+  }
+
+  function editBook(bookId) {
+    const book = books.find((b) => b.id === bookId);
+    if (!book) return;
+
+    document.getElementById("bookFormTitle").value = book.title;
+    document.getElementById("bookFormAuthor").value = book.author;
+    document.getElementById("bookFormYear").value = book.year;
+    document.getElementById("bookFormIsComplete").checked = book.isComplete;
+
+    books = books.filter((b) => b.id !== bookId);
+    saveBooks();
+    renderBooks();
   }
 
   function toggleBookStatus(bookId) {
