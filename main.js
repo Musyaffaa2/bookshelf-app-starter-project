@@ -82,6 +82,8 @@ function toggleBookStatus(id) {
 }
 
 function renderBooks() {
+  const incompleteBookList = document.getElementById("incompleteBookList");
+  const completeBookList = document.getElementById("completeBookList");
   incompleteBookList.innerHTML = "";
   completeBookList.innerHTML = "";
 
@@ -89,18 +91,17 @@ function renderBooks() {
   books.forEach((book) => {
     const bookElement = document.createElement("div");
     bookElement.dataset.bookid = book.id;
+    bookElement.dataset.testid = "bookItem";
     bookElement.innerHTML = `
-      <h3>${book.title}</h3>
-      <p>Penulis: ${book.author}</p>
-      <p>Tahun: ${book.year}</p>
-      <div>
-        <button onclick="toggleBookStatus(${book.id})">${
-      book.isComplete ? "Belum selesai dibaca" : "Selesai dibaca"
-    }</button>
-        <button onclick="deleteBook(${book.id})">Hapus Buku</button>
-        <button onclick="editBook(${book.id})">Edit Buku</button>
-      </div>
-    `;
+          <h3 data-testid="bookItemTitle">${book.title}</h3>
+            <p data-testid="bookItemAuthor">Penulis: ${book.author}</p>
+            <p data-testid="bookItemYear">Tahun: ${book.year}</p>
+            <div>
+                <button data-testid="bookItemIsCompleteButton" onclick="toggleBookStatus(${book.id})">${book.isComplete ? 'Belum selesai dibaca' : 'Selesai dibaca'}</button>
+                <button data-testid="bookItemDeleteButton" onclick="deleteBook(${book.id})">Hapus Buku</button>
+                <button data-testid="bookItemEditButton" onclick="editBook(${book.id})">Edit Buku</button>
+            </div>
+        `;
 
     if (book.isComplete) {
       completeBookList.appendChild(bookElement);
