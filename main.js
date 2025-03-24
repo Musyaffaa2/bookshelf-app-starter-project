@@ -36,7 +36,13 @@ function generateId() {
 
 function addBook(title, author, year, isComplete) {
   const books = getBooks();
-  const newBook = createBookObject(generateId(), title, author, parseInt(year), isComplete);
+  const newBook = createBookObject(
+    generateId(),
+    title,
+    author,
+    parseInt(year),
+    isComplete
+  );
   books.push(newBook);
   saveBooks(books);
   renderBooks();
